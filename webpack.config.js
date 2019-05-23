@@ -20,7 +20,7 @@ module.exports = {
                 use: 'raw-loader'
             },
             {
-                test: /\.(png|mp3)$/,
+                test: /\.(png|jpg|gif)$/,
                 use: [{ loader: 'url-loader'}]
             }
         ]
