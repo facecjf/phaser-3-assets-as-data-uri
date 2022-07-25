@@ -1,136 +1,156 @@
-import 'phaser';
+import 'phaser'
 
-// import the assets as base-64 data-uri strings with url-loader (see webpack.config.js)
-import blueSrc from '../assets/blue.png';
-import shardsSrc from '../assets/shards.png';
-import sfxSrc from '../assets/sfx.mp3';
-import napieEightFontSrc from '../assets/napie-eight-font.png';
+// ASSETS /////////////////////////////////////////////////////////////////////////
+import bgSrc from '../assets/bgPort.png'
+import shardsSrc from '../assets/shards.png'
 
 // the json file can be loaded by webpack. url-loader doesn't apply here
-import sfxJson from '../assets/sfx.json';
+//import sfxJson from '../assets/sfx.json'
 
-// this is a small helper to convert the audio (see package.json)
-import toArrayBuffer from 'to-array-buffer';
-
+// CONFIG /////////////////////////////////////////////////////////////////////////
 var config = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
-    width: 512,
-    height: 512,
-    pixelArt: true,
+    backgroundColor: '#2dab2d',
+    scale: {
+        parent: 'phaser-example',
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 720,
+        height: 1280
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: 0,
+            debug: true
+        }
+    },
     scene: {
         preload: preload,
-        create: create
+        create: create,
+        update: update
     }
-};
+}
 
-var game = new Phaser.Game(config);
+var game = new Phaser.Game(config)
 
-var bg;
-var shards;
-var emitter;
-var timedEvent;
-var text;
+// VARIABLES /////////////////////////////////////////////////////////////////////////
+// Assets
+var bg
+var shards
 
+// Emitters
+var emitter
+
+// Booleans
+var startGame = false
+
+// Numbers
+
+// Tweens
+
+// Timed events
+var timedEvent
+
+// PRELOAD (unused for DATA URI METHOD) // VARIABLES /////////////////////////////////
 function preload ()
 {
     // original loading methods for web (with xhr requests)
-    // ____________________________________________________
-
-    //this.load.image('bg', 'assets/blue.png');
-    //this.load.spritesheet([{ file: 'assets/shards.png', key: 'shards', config: { frameWidth: 16, frameHeight: 16 } }]);
-    //this.load.audioSprite('sfx', ['assets/sfx.ogg', 'assets/sfx.mp3'], 'assets/sfx.json');
-    //this.load.image('napie-eight-font', 'assets/napie-eight-font.png');
+    // this.load.image('bg', 'assets/blue.png');
 }
 
+// CREATE ///////////////////////////////////////////////////////////////////////////
 function create ()
 {
-    // new methods for loading the assets as data-uri's
-    // adding them directly to the textures and/or cache
-    // We don't place this in the preloader, because
-    // the preloader will immediatly return and
-    // we have our own async stuff and the assets won't
-    // be ready in the create function where we normally
-    // add our gameObjects
-    // _________________________________________________
 
-    var nAssets = 5;
-    var nLoaded = 0; // keep track
+    // ASSET TRACKING /////////////////// 
+    var nAssets = 2
+    var nLoaded = 0 // keep track
 
-    // method for a simple image
-    this.textures.addBase64('bg', blueSrc);
-    nLoaded++;
+    // ASSETS TO LOAD /////////////////// 
+    this.textures.addBase64('bg', bgSrc)
+    nLoaded++
 
-    // method for a spritesheet
-    var shardsImg = new Image();
+    // SPRITESHEET //////////////////////
+    var shardsImg = new Image()
     shardsImg.onload = () => {
-        this.textures.addSpriteSheet('shards', shardsImg, { frameWidth: 16, frameHeight: 16 });
+        this.textures.addSpriteSheet('shards', shardsImg, { frameWidth: 16, frameHeight: 16 })
         // check if assets are ready then call actual phaser create function
         nLoaded++;
         if (nLoaded >= nAssets) {
-            var actualCreate = createGameObjects.bind(this);
-            actualCreate();
+            var actualCreate = createGameObjects.bind(this)
+            actualCreate()
         }
-    };
-    shardsImg.src = shardsSrc;
+    }
+    shardsImg.src = shardsSrc
 
-    // method for an audiosprite json file
-    this.cache.json.add('sfx', sfxJson);
-    nLoaded++;
+} // END CREATE //////////////////////////////////////////////////////////////////////
 
-    // method for an audiosprite Audio Buffer
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    audioCtx.decodeAudioData(toArrayBuffer(sfxSrc), (buffer) => {
-        this.cache.audio.add('sfx', buffer);
-        // check if assets are ready then call actual phaser create function
-        nLoaded++;
-        if (nLoaded >= nAssets) {
-            var actualCreate = createGameObjects.bind(this);
-            actualCreate();
-        }
-    }, (e) => { console.log("Error with decoding audio data" + e.err); });
-
-    // method for bitmap font
-    this.textures.addBase64('napie-eight-font', napieEightFontSrc);
-    nLoaded++;
-    var fontConfig = {
-        image: 'napie-eight-font',
-        width: 8,
-        height: 8,
-        chars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ .,!?#abcdefghijklmnopqrstuvwxyz@:;^%&1234567890*\'"`[]/\\~+-=<>(){}_|$',
-        charsPerRow: 16,
-        spacing: { x: 0, y: 0 }
-    };
-    this.cache.bitmapFont.add('napie-eight-font', Phaser.GameObjects.RetroFont.Parse(this, fontConfig));
-
-}
-
-// the rest of the code is to check if everything loaded correctly
-// normally we place this in the create function
+// ACTUAL CREATE /////////////////////////////////////////////////////////////////////
 function createGameObjects ()
 {
-    bg = this.add.image(256, 256, 'bg');
-    shards = this.add.particles('shards');
+    // camera fade in
+    this.cameras.main.fadeIn(1000)
+
+    // on camera fade complete
+    this.cameras.main.once('camerafadeincomplete', function () {
+        // do shit
+        startGame = true
+        console.log('fade in done')
+        
+    })
+
+    //  Set the camera and physics bounds to be the size of 4x4 bg images
+    //this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2)
+    //this.physics.world.setBounds(0, 0, 1920 * 2, 1080 * 2)
+  
+
+    // create assets
+    bg = this.add.image(360, 640, 'bg')
+    bg.setOrigin(0.5)
+
+    // set camera to player position w/ lerp
+    //this.cameras.main.startFollow(player, true, 0.05, 0.05);
+
+    shards = this.add.particles('shards')
+    
     emitter = shards.createEmitter({
         frame: [0, 1, 2, 3],
-        x: 200,
-        y: 300,
-        speed: { min: -800, max: 800 },
-        angle: { min: 0, max: 360 },
-        scale: { start: 2, end: 0 },
+        x: 360,
+        y: 640,
         lifespan: 600,
-        gravityY: 800,
-        frequency: -1,
-        rotate: { min: -540, max: 540 }
-    });
-    timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
-    text = this.add.dynamicBitmapText(128, 128, 'napie-eight-font', 'explosions!!!');
-    text.setTint(0xe74c3c);
-    text.setScale(4);
-}
+        alpha: { start: 1, end: 0 },
+        speed: { min: 2, max: 20 },
+        angle: { min: 270, max: 270 },
+        gravityY: -3200,
+        gravityX: 0,
+        scale: { start: 2, end: 4 },
+        //quantity: 1,
+        accelerationY: 2000,
+        rotate: { min: 0, max: 360 },
+        blendMode: 'ADD',
+        //maxParticles: 32,
+        tint: 0x6600cc
+    })
 
-function onEvent ()
-{
-    emitter.explode(8, 128 + Math.floor(Math.random() * 256), 128 + Math.floor(Math.random() * 256));
-    this.sound.playAudioSprite('sfx', 'glass');
-}
+    // timed events
+    timedEvent = this.time.addEvent({ delay: 0, callback: onEvent, callbackScope: this, loop: true, repeat: 0 })
+
+} // END ACTUAL CREATE ///////////////////////////////////////////////////////////////
+
+// UPDATE ////////////////////////////////////////////////////////////////////////////
+function update () {
+
+} // END UPDATE //////////////////////////////////////////////////////////////////////
+
+// FUNCTIONS /////////////////////////////////////////////////////////////////////////
+// Basic callback function of timed event
+function onEvent () {
+    if (startGame) {
+        emitter.explode()
+        //console.log("hi")
+        
+    }  
+} 
+
+// END FUNCTIONS /////////////////////////////////////////////////////////////////////
