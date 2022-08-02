@@ -2,21 +2,45 @@ import 'phaser'
 
 // ASSETS /////////////////////////////////////////////////////////////////////////
 import bgSrc from '../assets/bgSq.jpg'
+import logoSrc from '../assets/logo.png'
 import shardsSrc from '../assets/shards.png'
 
 // the json file can be loaded by webpack. url-loader doesn't apply here
 //import sfxJson from '../assets/sfx.json'
 
+// Aspect Ratio 16:9 - landscape
+/*
+const MAX_SIZE_WIDTH_SCREEN = 1920
+const MAX_SIZE_HEIGHT_SCREEN = 1080
+const MIN_SIZE_WIDTH_SCREEN = 480
+const MIN_SIZE_HEIGHT_SCREEN = 270
+const SIZE_WIDTH_SCREEN = 960
+const SIZE_HEIGHT_SCREEN = 540
+*/
+// Aspect Ratio 16:9 - portrait
+const MAX_SIZE_WIDTH_SCREEN = 1080
+const MAX_SIZE_HEIGHT_SCREEN = 1920
+const MIN_SIZE_WIDTH_SCREEN = 270
+const MIN_SIZE_HEIGHT_SCREEN = 480
+const SIZE_WIDTH_SCREEN = 540
+const SIZE_HEIGHT_SCREEN = 960
 // CONFIG /////////////////////////////////////////////////////////////////////////
 var config = {
     type: Phaser.AUTO,
-    backgroundColor: '#2dab2d',
+    backgroundColor: '#FFF',
     scale: {
         mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 668,
-        height: 1136
+        width: SIZE_WIDTH_SCREEN,
+        height: SIZE_HEIGHT_SCREEN,
+        min: {
+            width: MIN_SIZE_WIDTH_SCREEN,
+            height: MIN_SIZE_HEIGHT_SCREEN
+        },
+        max: {
+            width: MAX_SIZE_WIDTH_SCREEN,
+            height: MAX_SIZE_HEIGHT_SCREEN
+        }
     },
     physics: {
         default: 'arcade',
@@ -109,10 +133,10 @@ function createGameObjects ()
     // create assets
     //background
     bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg')
-    let ScaleX = this.cameras.main.width / bg.width
-    let ScaleY = this.cameras.main.height / bg.height
-    let Scale = Math.max(ScaleX, ScaleY)
-    bg.setScale(Scale).setScrollFactor(0)
+    let bgScaleX = this.cameras.main.width / bg.width
+    let bgScaleY = this.cameras.main.height / bg.height
+    let bgScale = Math.max(bgScaleX, bgScaleY)
+    bg.setScale(bgScale).setScrollFactor(0)
     
 
     // set camera to player position w/ lerp
