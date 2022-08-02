@@ -3,6 +3,7 @@
 <head> 
     <meta charset="UTF-8" />
     <title>PlayableName</title>
+    
     <!-- CSS -->
     <style>
         html, body {
@@ -11,14 +12,17 @@
         body {
             margin: 0 auto;
             padding: 0;
-            background: #111;
+            background: #1b1b1b;
             color: #eee;
             font: caption;
         }
         canvas {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
+            display: block;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
         }
         #phaser-app {
             margin: 0 auto;
