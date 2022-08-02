@@ -1,7 +1,7 @@
 import 'phaser'
 
 // ASSETS /////////////////////////////////////////////////////////////////////////
-import bgSrc from '../assets/bgPort.png'
+import bgSrc from '../assets/bgSq.jpg'
 import shardsSrc from '../assets/shards.png'
 
 // the json file can be loaded by webpack. url-loader doesn't apply here
@@ -12,11 +12,11 @@ var config = {
     type: Phaser.AUTO,
     backgroundColor: '#2dab2d',
     scale: {
-        parent: 'phaser-example',
         mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 720,
-        height: 1280
+        width: 668,
+        height: 1136
     },
     physics: {
         default: 'arcade',
@@ -46,6 +46,7 @@ var emitter
 var startGame = false
 
 // Numbers
+//var scale = 0
 
 // Tweens
 
@@ -106,13 +107,18 @@ function createGameObjects ()
   
 
     // create assets
-    bg = this.add.image(360, 640, 'bg')
-    bg.setOrigin(0.5)
+    //background
+    let bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg')
+    let scaleX = this.cameras.main.width / bg.width
+    let scaleY = this.cameras.main.height / bg.height
+    let scale = Math.max(scaleX, scaleY)
+    bg.setScale(scale).setScrollFactor(0)
+    
 
     // set camera to player position w/ lerp
     //this.cameras.main.startFollow(player, true, 0.05, 0.05);
 
-    shards = this.add.particles('shards')
+    let shards = this.add.particles('shards')
     
     emitter = shards.createEmitter({
         frame: [0, 1, 2, 3],
@@ -140,7 +146,7 @@ function createGameObjects ()
 
 // UPDATE ////////////////////////////////////////////////////////////////////////////
 function update () {
-
+    
 } // END UPDATE //////////////////////////////////////////////////////////////////////
 
 // FUNCTIONS /////////////////////////////////////////////////////////////////////////
@@ -152,5 +158,4 @@ function onEvent () {
         
     }  
 } 
-
 // END FUNCTIONS /////////////////////////////////////////////////////////////////////
