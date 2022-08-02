@@ -37,6 +37,9 @@ var game = new Phaser.Game(config)
 // VARIABLES /////////////////////////////////////////////////////////////////////////
 // Assets
 var bg
+var bgScale
+var bgScaleX
+var bgScaleY
 var shards
 
 // Emitters
@@ -108,22 +111,22 @@ function createGameObjects ()
 
     // create assets
     //background
-    let bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg')
-    let scaleX = this.cameras.main.width / bg.width
-    let scaleY = this.cameras.main.height / bg.height
-    let scale = Math.max(scaleX, scaleY)
-    bg.setScale(scale).setScrollFactor(0)
+    bg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg')
+    let ScaleX = this.cameras.main.width / bg.width
+    let ScaleY = this.cameras.main.height / bg.height
+    let Scale = Math.max(ScaleX, ScaleY)
+    bg.setScale(Scale).setScrollFactor(0)
     
 
     // set camera to player position w/ lerp
     //this.cameras.main.startFollow(player, true, 0.05, 0.05);
 
-    let shards = this.add.particles('shards')
+    shards = this.add.particles('shards')
     
     emitter = shards.createEmitter({
         frame: [0, 1, 2, 3],
-        x: 360,
-        y: 640,
+        x: this.cameras.main.width/2,
+        y: this.cameras.main.height/2,
         lifespan: 600,
         alpha: { start: 1, end: 0 },
         speed: { min: 2, max: 20 },
