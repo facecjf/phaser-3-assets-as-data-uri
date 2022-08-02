@@ -37,9 +37,6 @@ var game = new Phaser.Game(config)
 // VARIABLES /////////////////////////////////////////////////////////////////////////
 // Assets
 var bg
-var bgScale
-var bgScaleX
-var bgScaleY
 var shards
 
 // Emitters
