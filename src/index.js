@@ -2,7 +2,6 @@ import 'phaser'
 
 // ASSETS /////////////////////////////////////////////////////////////////////////
 import bgSrc from '../assets/bgSq.jpg'
-import logoSrc from '../assets/logo.png'
 import shardsSrc from '../assets/shards.png'
 
 // the json file can be loaded by webpack. url-loader doesn't apply here
