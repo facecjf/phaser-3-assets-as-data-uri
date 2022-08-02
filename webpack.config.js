@@ -13,7 +13,7 @@ module.exports = {
         filename: 'game.js'
     },
 
-    module: {
+   module: {
         rules: [
             {
                 test: [ /\.vert$/, /\.frag$/ ],
@@ -21,18 +21,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif|mp3)$/,
-                use: [
-                    { 
-                        loader: 'img-optimize-loader',
-                        options: {
-                            compress: {
-                            // This will take more time and get smaller images.
-                            mode: 'high', // 'lossless', 'low'
-                            disableOnDevelopment: true
-                            }
-                        }
-                     }
-                    ]
+                use: [{ loader: 'url-loader'}]
             }
         ]
     },
