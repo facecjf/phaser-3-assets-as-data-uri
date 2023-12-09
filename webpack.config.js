@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/build/',
-        filename: 'game.js'
+        filename: 'playable.js'
     },
 
    module: {
